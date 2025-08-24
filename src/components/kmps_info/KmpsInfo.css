@@ -1,0 +1,12 @@
+.kmps-info__section-of-btn_incolumn{
+    display:flex;
+    flex-direction: column;
+    row-gap: 12px;
+}
+
+.list-draft-kmps__select{
+    max-width:100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+}

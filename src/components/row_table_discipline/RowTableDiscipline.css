@@ -1,0 +1,17 @@
+.row-table-discipline__name{
+    vertical-align: top;
+    
+}
+
+
+.list-competency__wrapper{
+    display:flex;
+    flex-direction: column;
+    row-gap: 12px;
+}
+
+.competency__name{
+    display: flex;
+    align-items: start;
+    
+}

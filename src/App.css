@@ -1,0 +1,96 @@
+*{
+  box-sizing: border-box;
+}
+#root {
+ 
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+/* ********************************** */
+
+.tree__wrapper{
+  position:relative;
+  margin: 0 auto;
+   /* border:1px solid red; */
+  
+}
+.node-info__wrapper{
+   visibility: hidden;
+   pointer-events: none;
+  /* display:none; */
+ 
+  position:absolute;
+  background-color: #fff;
+  
+  box-shadow: 4px 4px 14px 0px rgba(34, 60, 80, 0.2);
+  width: 300px;
+  min-height: 200px;
+  opacity: 0;
+  transition: opacity .5s ease;
+  pointer-events: none; /* Чтобы не перехватывал события мыши когда скрыт */
+}
+
+.node-info__wrapper_visible{
+  visibility: visible;
+  /* display:block; */
+  opacity:1;
+   pointer-events: auto;
+}
+
+
+.kmps-info__wrapper{
+  position:sticky;
+  z-index: 1000;
+  top:24px;
+  left: 12px;
+  box-shadow: 4px 4px 14px 0px rgba(34, 60, 80, 0.2);
+  /* border:1px solid red; */
+  padding:12px;
+  min-width: 250px;
+  max-width:250px;
+  background-color: #fff;
+}
+/* ********************************** */
+.tree{
+  /* border:1px solid red; */
+  width:100%;
+  height:99%;
+  position:absolute;
+  top:0;
+  left:0;
+}

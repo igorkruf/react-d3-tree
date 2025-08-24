@@ -1,0 +1,81 @@
+
+.hours__add{
+    /* border:1px solid red; */
+    cursor: pointer;
+}
+
+.section-of-btn_inline{
+    display:flex;
+}
+
+.section-of-btn__item{
+    flex-grow: 1;
+}
+
+.flex_incolumn{
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+}
+
+.count-hours{
+    /* position:relative;
+    border:1px solid red;  */
+   
+}
+
+.count-hours__btn-open-detail{
+    cursor: pointer;
+}
+
+.count-hours__detail{
+    
+    /* border:1px solid red; */
+    width: 300px;
+    position:absolute;
+    top: -32px;
+    left: calc(100% - 6px);
+    display:flex;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: 4px 4px 14px 0px rgba(34, 60, 80, 0.2);
+    min-height:48px;
+    padding:12px;
+    
+    
+}
+
+.node-info{
+    position:relative;
+}
+
+.node-info__tr{
+    display:flex;
+    position:relative;
+    /* border:1px solid red; */
+}
+
+.node-info__tr::after{
+    content:'';
+    position:absolute;
+    bottom: 0;
+    left:50%;
+    transform: translateX(-50%);
+    width:90%;
+    height:1px;
+    background-color: #e6e6e6;
+
+}
+
+.node-info__td{
+    /* border: 1px solid green; */
+    flex-grow: 1;
+    text-align: right;
+    padding:12px;
+}
+
+.node-info__td-first{
+    text-align: left;
+    font-weight: bold !important;
+}
+

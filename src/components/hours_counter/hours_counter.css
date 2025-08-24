@@ -1,0 +1,41 @@
+
+.hours-counter{
+    margin-top: 12px;
+    /* border:1px solid black; */
+    width: 100%;
+}
+
+.hours-counter__tr{
+    width:100%;
+    display: flex;
+    /* border:1px solid green; */
+   
+}
+
+.hours-counter__tr-title{
+    background-color: #e2e2e2;
+}
+
+.hours-counter__td{
+    display: flex;
+    /* border:1px solid red; */
+    width:50%;
+    column-gap: 12px;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.btn{
+    margin:3px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height:24px;
+    width:24px;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 4px 4px 14px 0px rgba(34, 60, 80, 0.2);
+    cursor: pointer;
+}
+
