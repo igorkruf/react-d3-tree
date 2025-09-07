@@ -4,20 +4,23 @@ import Modal from '../modal/modal.jsx'
 
 function KmpsInfo({availableHours, 
                    listDraftKmps, 
-                   addDraftKms, 
+                   addDraftKms,
+                   delDraftKmps, 
                    countHours, 
-                   successAddedDraftKmps, 
+                   successAddedDraftKmps,
+                   successDelDraftKmps, 
                    changeKmps,
                    toggleTableKmps,
                    isTable}) {
     let [innerSuccessAddedDraftKmps, setInnerSuccessAddedDraftKmps ] = useState(false)
+    let [InnerSuccessDelDraftKmps, setInnerSuccessDelDraftKmps ] = useState(false)
     let [isModalOpen, setIsModalOpen] = useState(false);
     let [isSubModalOpen, setIsSubModalOpen] = useState(false);
     let [nameDraft, setNameDraft] = useState('');
     let [enabledAddDraftBtn, setEnabledAddDraftBtn] = useState(false);
     let [doAddDraftKmps, setDoAddDraftKmps] = useState(false);
     let [isDraftKmps, setIsDraftKmps] = useState(false);
-
+    let [isConfirmDeleteDraftKmpsModalOpen, setIsConfirmDeleteDraftKmpsModalOpen] = useState(false);
 
     let refNameDraft = useRef();
     let refSelectKmps = useRef();
@@ -30,6 +33,9 @@ function KmpsInfo({availableHours,
     
     
     useEffect(()=>{
+        console.log('listDraftKmps')
+        console.log(listDraftKmps)
+        console.log(refSelectKmps.current?.value)
         // Читаем из localStorage значение ключа id_active_kmps (кнопки сохранить изменения )
         let idActiveKmps = JSON.parse(localStorage.getItem('id_active_kmps'));
         refSelectKmps.current.value===idActiveKmps? setIsDraftKmps(false):setIsDraftKmps(true);
@@ -39,6 +45,12 @@ function KmpsInfo({availableHours,
              setInnerSuccessAddedDraftKmps(successAddedDraftKmps);
     }, [successAddedDraftKmps])
 
+    useEffect(()=>{
+             setInnerSuccessDelDraftKmps(successDelDraftKmps);
+    }, [successDelDraftKmps])
+
+    
+    
     useEffect(()=>{
        isFirstRender.current= !isModalOpen;
        
@@ -70,7 +82,12 @@ function KmpsInfo({availableHours,
         changeKmps(e.target.value)
     }
 
+    function innerDelDraftKmps(draft_kmps_pk){
+        console.log('Удаляем черновик')
+        setIsConfirmDeleteDraftKmpsModalOpen(false);
+        delDraftKmps(draft_kmps_pk)
 
+    }
 
     return <>
         <div>
@@ -93,7 +110,7 @@ function KmpsInfo({availableHours,
             {isDraftKmps && (
                 <>
                 <button className='section-of-btn__item' onClick={toggleTableKmps}>{isTable?'Граф':'Таблица'}</button>
-                <button className='section-of-btn__item' >Удалить черновик</button>
+                <button className='section-of-btn__item' onClick={()=>setIsConfirmDeleteDraftKmpsModalOpen(true)}>Удалить черновик</button>
                 <button className='section-of-btn__item' >Сохранить изменения в черновике</button>
                 </>
                 )
@@ -137,6 +154,19 @@ function KmpsInfo({availableHours,
             открыть субмодальное окно
         </button> */}
     </Modal>
+
+    <Modal isOpen={isConfirmDeleteDraftKmpsModalOpen} 
+           onClose={() =>setIsConfirmDeleteDraftKmpsModalOpen(false)}
+           level={0}>
+                <div className='modal-content__title'>Удаляете черновик "{listDraftKmps.find(draft => draft.pk == refSelectKmps.current?.value)?.name}"? </div>
+                <div className="kmps-info__section-of-btn kmps-info__section-of-btn_inline">
+                    <button className='section-of-btn__item' onClick={()=>innerDelDraftKmps(refSelectKmps.current.value)}>Да</button>
+                    <button className='section-of-btn__item' onClick={()=>setIsConfirmDeleteDraftKmpsModalOpen(false)}>Отмена</button>
+                </div>         
+                         
+                
+    </Modal>       
+
     <Modal
                 isOpen={isSubModalOpen} 
                 onClose={() =>setIsSubModalOpen(false)}

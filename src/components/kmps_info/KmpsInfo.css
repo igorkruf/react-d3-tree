@@ -1,7 +1,16 @@
+.kmps-info__section-of-btn{
+    margin-top: 24px;
+}
+
 .kmps-info__section-of-btn_incolumn{
     display:flex;
     flex-direction: column;
     row-gap: 12px;
+}
+
+.kmps-info__section-of-btn_inline{
+    display:flex;
+    column-gap: 12px;
 }
 
 .list-draft-kmps__select{

@@ -29,6 +29,7 @@ export default function customTree() {
   const [collapsedNodes, setCollapsedNodes] = useState(new Set());
   const [translate, setTranslate] = useState({ x: 0, y: 0 });
   const [successAddedDraftKmps, setSuccessAddedDraftKmps] = useState(false);
+  const [successDelDraftKmps, setSuccessDelDraftKmps] = useState(false);
   const [scale, setScale] = useState(0.8); // Начальный масштаб
   let [availableHours, setAvailableHours] = useLocalStorage('kmps_availabel_hours', 0);
   let [listDisciplinesNames, setListDisciplineNames] = useLocalStorage('kmps_list_disciplines_names', []);
@@ -46,7 +47,7 @@ useLayoutEffect(()=>{
 
    try {
     console.log('До очистки:', localStorage.length, 'элементов');
-    localStorage.clear();
+    localStorage.clear();//Обязательно исправить на конкретные элементы (ключи)
     console.log('После очистки:', localStorage.length, 'элементов');
     console.log(localStorage.getItem('kmps_availabel_hours'));
     setAvailableHours(0);
@@ -363,7 +364,42 @@ let decreaseAvailableHours = (disciplineId, competencyId, newCountHours)=>{
       {result.add_status && getListDraftKmps(treeData)}
     }
     
+///////////////////////////////////////////////////////////////////////////////////////////////
 
+ let delDraftKmps=async (idDraft)=>{
+      let csrftoken = getCookie('csrftoken')
+      console.log('удаляем черновик!!!')
+      console.log('idDraft')
+      console.log(idDraft)
+      console.log(`${document.querySelector('#root').dataset.del_draft_kmps_url}${idDraft}`)
+      let fetchUrl = `${document.querySelector('#root').dataset.del_draft_kmps_url}${idDraft}`;
+      
+      let response =await fetch(fetchUrl, {
+        method:'DELETE',
+        headers: {
+          'X-CSRFToken':csrftoken,
+        },
+        credentials: 'include',
+        
+      })
+            
+      let result= await response.json();
+      console.log('что пришло после удаления:')
+      console.log(result)
+      if (result.deleted){
+          setIsTable(false);
+          getTreeData();
+          setAvailableHours(0);
+      }
+    
+
+      result.deleted?setSuccessDelDraftKmps(true):setSuccessDelDraftKmps(false);
+
+      result.deleted && getListDraftKmps(treeData)
+    }
+    
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 
     function addChildNode(dataNodeChild){
@@ -462,8 +498,10 @@ let decreaseAvailableHours = (disciplineId, competencyId, newCountHours)=>{
                   listDraftKmps={listDraftKmps}
                   addDraftKms={(nameDraft, count_hours, count_hours_available, idActiveKmps)=>addDraftKms(nameDraft, count_hours, count_hours_available, idActiveKmps)}
                   successAddedDraftKmps={successAddedDraftKmps}
+                  successDelDraftKmps={successDelDraftKmps}
                   changeKmps={(id_kmps)=>changeKmps(id_kmps)}
                   toggleTableKmps={()=>setIsTable(!isTable)}
+                  delDraftKmps={(idDraft)=>delDraftKmps(idDraft)}
                   />
                   
       </div>
