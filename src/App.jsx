@@ -30,6 +30,8 @@ export default function customTree() {
   const [translate, setTranslate] = useState({ x: 0, y: 0 });
   const [successAddedDraftKmps, setSuccessAddedDraftKmps] = useState(false);
   const [successDelDraftKmps, setSuccessDelDraftKmps] = useState(false);
+  const [successSaveDraftKmps, setSuccessSaveDraftKmps] = useState(null);
+
   const [scale, setScale] = useState(0.8); // Начальный масштаб
   let [availableHours, setAvailableHours] = useLocalStorage('kmps_availabel_hours', 0);
   let [listDisciplinesNames, setListDisciplineNames] = useLocalStorage('kmps_list_disciplines_names', []);
@@ -368,17 +370,19 @@ let decreaseAvailableHours = (disciplineId, competencyId, newCountHours)=>{
 
  let delDraftKmps=async (idDraft)=>{
       let csrftoken = getCookie('csrftoken')
-      console.log('удаляем черновик!!!')
-      console.log('idDraft')
-      console.log(idDraft)
-      console.log(`${document.querySelector('#root').dataset.del_draft_kmps_url}${idDraft}`)
-      let fetchUrl = `${document.querySelector('#root').dataset.del_draft_kmps_url}${idDraft}`;
+      // console.log('удаляем черновик!!!')
+      // console.log('idDraft')
+      // console.log(idDraft)
+      // console.log(`${document.querySelector('#root').dataset.del_draft_kmps_url}`)
+      let fetchUrl = `${document.querySelector('#root').dataset.del_draft_kmps_url}`;
       
       let response =await fetch(fetchUrl, {
         method:'DELETE',
         headers: {
           'X-CSRFToken':csrftoken,
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ draft_kmps_pk: idDraft }),
         credentials: 'include',
         
       })
@@ -398,7 +402,28 @@ let decreaseAvailableHours = (disciplineId, competencyId, newCountHours)=>{
       result.deleted && getListDraftKmps(treeData)
     }
     
-
+ let saveDraftKmps = async (idDraft)=>{
+    let csrftoken = getCookie('csrftoken')
+    let fetchUrl = `${document.querySelector('#root').dataset.save_draft_kmps_url}`;
+    let response =await fetch(fetchUrl, {
+      method:'PUT',
+      headers: {
+        'X-CSRFToken':csrftoken,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ draft_kmps_pk: idDraft, 
+                             tree_data_json: JSON.stringify(treeData),
+                             count_hours_available: availableHours}),
+      credentials: 'include',
+      
+    })
+          
+    let result= await response.json();
+    console.log('что пришло после сохранения:')
+    console.log(result)
+    setSuccessSaveDraftKmps(result.save)
+    setTimeout(()=>{setSuccessSaveDraftKmps(null)}, 1000);
+ }
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -502,6 +527,8 @@ let decreaseAvailableHours = (disciplineId, competencyId, newCountHours)=>{
                   changeKmps={(id_kmps)=>changeKmps(id_kmps)}
                   toggleTableKmps={()=>setIsTable(!isTable)}
                   delDraftKmps={(idDraft)=>delDraftKmps(idDraft)}
+                  saveDraftKmps={(idDraft)=>saveDraftKmps(idDraft)}
+                  successSaveDraftKmps = {successSaveDraftKmps}
                   />
                   
       </div>
