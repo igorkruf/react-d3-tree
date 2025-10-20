@@ -5,10 +5,12 @@ import Modal from '../modal/modal.jsx'
 function KmpsInfo({availableHours, 
                    listDraftKmps, 
                    addDraftKms,
-                   delDraftKmps, 
+                   delDraftKmps,
+                   saveDraftKmps, 
                    countHours, 
                    successAddedDraftKmps,
-                   successDelDraftKmps, 
+                   successDelDraftKmps,
+                   successSaveDraftKmps, 
                    changeKmps,
                    toggleTableKmps,
                    isTable}) {
@@ -49,7 +51,10 @@ function KmpsInfo({availableHours,
              setInnerSuccessDelDraftKmps(successDelDraftKmps);
     }, [successDelDraftKmps])
 
-    
+    useEffect(()=>{
+        geClasstStatusBtn()
+        
+    },[successSaveDraftKmps])
     
     useEffect(()=>{
        isFirstRender.current= !isModalOpen;
@@ -89,6 +94,20 @@ function KmpsInfo({availableHours,
 
     }
 
+    function innerSaveDraftKmps(draft_kmps_pk){
+        console.log('сохраняем изменения в черновике')
+        saveDraftKmps(draft_kmps_pk)
+    }
+
+    function geClasstStatusBtn(){
+        console.log('получаем класс')
+         if (!(successSaveDraftKmps == null)){
+            return successSaveDraftKmps?'btn__status_success':'btn__status_error'
+            }
+        return ''
+        }
+       
+
     return <>
         <div>
             <select 
@@ -111,7 +130,7 @@ function KmpsInfo({availableHours,
                 <>
                 <button className='section-of-btn__item' onClick={toggleTableKmps}>{isTable?'Граф':'Таблица'}</button>
                 <button className='section-of-btn__item' onClick={()=>setIsConfirmDeleteDraftKmpsModalOpen(true)}>Удалить черновик</button>
-                <button className='section-of-btn__item' >Сохранить изменения в черновике</button>
+                <button className={`section-of-btn__item ${geClasstStatusBtn()}`} onClick={()=>innerSaveDraftKmps(refSelectKmps.current.value)}>Сохранить изменения в черновике</button>
                 </>
                 )
             }
@@ -128,17 +147,19 @@ function KmpsInfo({availableHours,
 
         <header>Добавление черновика КМС</header>
         <div>
-            <input type="text" onChange={(e)=>changeNameDraft(e.target.value)} value={nameDraft} ref={refNameDraft} placeholder='Введи название черновика' />
+            <input className="form-field" type="text" onChange={(e)=>changeNameDraft(e.target.value)} value={nameDraft} ref={refNameDraft} placeholder='Введи название черновика' />
             <input type="hidden"  ref= {refCountHours} value={countHours}/>
             <input type='hidden' ref={refCountHoursAvailable} value={availableHours}/>
-            <button className={ `btn ${!enabledAddDraftBtn?'btn_disabled': ''}`} 
-                                onClick={()=>innerAddDraftKmps(
-                                                        refNameDraft.current.value,
-                                                        refCountHours.current.value,
-                                                        refCountHoursAvailable.current.value,
-                                                        
-                                                        )} 
-                                disabled={!enabledAddDraftBtn}>Добавить</button>
+            <div className='section-btns kmps-info__section-of-btn_inline'>
+                <button className={ `section-of-btn__item  graf-btn ${!enabledAddDraftBtn?'btn_disabled': ''}`} 
+                                    onClick={()=>innerAddDraftKmps(
+                                                            refNameDraft.current.value,
+                                                            refCountHours.current.value,
+                                                            refCountHoursAvailable.current.value,
+                                                            
+                                                            )} 
+                                    disabled={!enabledAddDraftBtn}>Добавить</button>
+            </div>
         </div>
 
          {!isFirstRender.current && doAddDraftKmps && ( 
@@ -160,7 +181,7 @@ function KmpsInfo({availableHours,
            level={0}>
                 <div className='modal-content__title'>Удаляете черновик "{listDraftKmps.find(draft => draft.pk == refSelectKmps.current?.value)?.name}"? </div>
                 <div className="kmps-info__section-of-btn kmps-info__section-of-btn_inline">
-                    <button className='section-of-btn__item' onClick={()=>innerDelDraftKmps(refSelectKmps.current.value)}>Да</button>
+                    <button className='section-of-btn__item btn__status_error' onClick={()=>innerDelDraftKmps(refSelectKmps.current.value)}>Да</button>
                     <button className='section-of-btn__item' onClick={()=>setIsConfirmDeleteDraftKmpsModalOpen(false)}>Отмена</button>
                 </div>         
                          

@@ -19,3 +19,19 @@
     border-radius: 6px;
     border: none;
 }
+
+.section-of-btn__item{
+    color:#000;
+    transition: all ease-in-out .5;
+    flex-grow: 1;
+}
+
+.btn__status_success{
+    color:#fff;
+    background-color: green;
+}
+
+.btn__status_error{
+    color:#fff;
+    background-color: red;
+}

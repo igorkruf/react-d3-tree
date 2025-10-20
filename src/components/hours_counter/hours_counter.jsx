@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './hours_counter.css';
-import {getPathToValue} from '../functions.js'
+
 
 function HoursCounter({discipline, doIncreaseAvailableHours, doDecreaseAvailableHours, competencyNode}){
     // let [countHours, setCountHours] = useState(discipline.hours_count);
@@ -21,16 +21,7 @@ function HoursCounter({discipline, doIncreaseAvailableHours, doDecreaseAvailable
 
     }, [])
 
-    // useEffect(()=>{
-    //     // let pathToCompetencyNode = getPathToValue(treeData, competencyNode.id);
-    //     // pathToCompetencyNode.pop();
-    //     // изменяем кол-во часов в treeData(это ссылачная переменная которая инициализируется в корневом компоненте app.js)
-    //     // setCountHoursByPathForDisciplineInCompetency(treeData, pathToCompetencyNode, countHours)
-    //     console.log('competencyNode');
-    //     console.log(competencyNode);
-    //     competencyNode.count_hours[discipline.pk] = countHours;
-    //      console.log(competencyNode);
-    // }, [countHours])
+ 
     
     function increaseHours(disciplineId, competencyId, newCountHours){
         setCountHours(countHours+1);
@@ -53,14 +44,14 @@ function HoursCounter({discipline, doIncreaseAvailableHours, doDecreaseAvailable
         <div className='hours-counter__tr'>
             <div className='hours-counter__td'>{discipline.hours_count?discipline.hours_count:0}</div>
             <div className='hours-counter__td'>
-                <div className='btn decrease-hours' onClick={()=>decreaseHours(discipline.pk, competencyNode.id, (countHours-1))}>-</div>
+                <div className='graf-btn decrease-hours' onClick={()=>decreaseHours(discipline.pk, competencyNode.id, (countHours-1))}>-</div>
                 <div className='discipline-info__count-hours'>{countHours}</div>
-                <div className='btn increase-hours' onClick={()=>increaseHours(discipline.pk, competencyNode.id, (countHours+1))}>+</div>
+                <div className='graf-btn increase-hours' onClick={()=>increaseHours(discipline.pk, competencyNode.id, (countHours+1))}>+</div>
                 
             </div>
         </div>
     </div>
-    <div>{availableHours}</div>
+    {/* <div>{availableHours}</div> */}
 
     
     </>
